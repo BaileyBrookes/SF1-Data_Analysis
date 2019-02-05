@@ -1,0 +1,17 @@
+\contentsline {section}{\numberline {1}Introduction}{2}
+\contentsline {section}{\numberline {2}Summary of previous work}{2}
+\contentsline {subsection}{\numberline {2.1}Week 1 - Spectrum Analysis}{2}
+\contentsline {subsection}{\numberline {2.2}Week 2 - Noise Reduction}{2}
+\contentsline {section}{\numberline {3}Parameter Estimation}{3}
+\contentsline {subsection}{\numberline {3.1}Simple linear model}{3}
+\contentsline {subsubsection}{\numberline {3.1.1}ML estimate}{3}
+\contentsline {subsubsection}{\numberline {3.1.2}MAP estimate}{4}
+\contentsline {subsubsection}{\numberline {3.1.3}Investigating these estimates}{5}
+\contentsline {subsection}{\numberline {3.2}Linear Model with trend}{5}
+\contentsline {subsection}{\numberline {3.3}Model Choice}{6}
+\contentsline {subsection}{\numberline {3.4}Bayesian Needle in a digital haystack}{6}
+\contentsline {subsection}{\numberline {3.5}The Autoregressive (AR) Model}{6}
+\contentsline {subsubsection}{\numberline {3.5.1}Generating AR data}{6}
+\contentsline {subsubsection}{\numberline {3.5.2}Parameter Estimation for AR}{6}
+\contentsline {subsubsection}{\numberline {3.5.3}Model Selection for AR}{7}
+\contentsline {subsubsection}{\numberline {3.5.4}Predicting Missing data}{7}

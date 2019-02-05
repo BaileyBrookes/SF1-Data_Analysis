@@ -1,0 +1,82 @@
+% Bayesian Model Choice
+clear all; close all; 
+
+% Number of datapoints
+N = 100;
+var_e = 1;
+
+% Model 1: y = e
+G1 = zeros(N,1);
+theta1 = 0;
+m_theta1 = 0; cov_theta1 = 1;
+m_e1 = 0; var_e1 = 5; 
+
+% Model 2: y = a + e
+G2 = ones(N,1);
+theta2 = 1;
+m_theta2 = 1; cov_theta2 =  1;
+m_e2 = 0; var_e2 = 5;
+
+% Model 3: y a + bn + e
+n = [1:N]';
+G3 = [ones(N,1), n];
+theta3 = [1;2];
+m_theta3 = [1;2]; cov_theta3= eye(2);
+m_e3 =0; var_e3 = 1;
+
+% Geneate data from model choice
+model = 3;
+switch model
+    case 1
+        G = G1;
+        m_e = m_e1 ; var_e = var_e1;
+        m_theta = m_theta1; cov_theta = m_theta1;
+        theta = theta1;
+    case 2
+        G = G2;
+        m_e = m_e2; var_e = var_e2 ;
+        m_theta = m_theta2; cov_theta = cov_theta2;
+        theta = theta2;
+    case 3
+        G = G3;
+        m_e = m_e3; var_e = var_e3;
+        m_theta = m_theta3; cov_theta = cov_theta3;
+        theta = theta3;
+end
+e= m_e + var_e*randn(N,1);
+y = G*theta + e;
+
+% Generate MAP matrices
+phi1 = G1'*G1 + var_e1*inv(cov_theta1);
+The1 = G1'*y  + var_e1*inv(cov_theta1)*m_theta1;
+phi2 = G2'*G2 + var_e2*inv(cov_theta2);
+The2 = G2'*y  + var_e2*inv(cov_theta2)*m_theta2;
+phi3 = G3'*G3 + var_e3*inv(cov_theta3);
+The3 = G3'*y  + var_e3*inv(cov_theta3)*m_theta3;
+
+% MAP estimates of parameters
+theta1_MAP = inv(phi1)*The1;
+theta2_MAP = inv(phi2)*The2;
+theta3_MAP = inv(phi3)*The3;
+
+% Calulate each of the terms for the ML
+P1 = 0; P2 = 1; P3 = 2;
+
+front1 = 1/((2*pi)^(P1/2) * sqrt(det(cov_theta1)) * sqrt(det(phi1)) * (2*pi*var_e1)^((N-P1)/2));
+front2 = 1/((2*pi)^(P2/2) * sqrt(det(cov_theta2)) * sqrt(det(phi2)) * (2*pi*var_e2)^((N-P2)/2));
+front3 = 1/((2*pi)^(P3/2) * sqrt(det(cov_theta3)) * sqrt(det(phi3)) * (2*pi*var_e3)^((N-P3)/2));
+
+exp1 = -(1/(2*var_e1)) * (y'*y + var_e1 * m_theta1' * inv(cov_theta1) * m_theta1 - The1'*theta1_MAP);
+exp2 = -(1/(2*var_e2)) * (y'*y + var_e2 * m_theta2' * inv(cov_theta2) * m_theta2 - The2'*theta2_MAP);
+exp3 = -(1/(2*var_e3)) * (y'*y + var_e3 * m_theta3' * inv(cov_theta3) * m_theta3 - The3'*theta3_MAP);
+
+pM1 = (front1 * exp(exp1));
+pM2 = (front2 * exp(exp2));
+pM3 = (front3 * exp(exp3));
+disp([pM1 pM2 pM3])
+
+figure;
+plot(y)
+xlabel('N')
+ylabel('y')
+title(['Model Probabilties: p(x|M_1) = ' num2str(pM1) ', p(x|M_2) = ' num2str(pM2) ', p(x|M_3) = ' num2str(pM3)])
